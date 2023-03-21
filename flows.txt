@@ -1,0 +1,125 @@
+flow for collection
+
+business call promise
+	task create
+	ask bro whether they can collect the money
+		yes
+			thanks and please collect
+		no
+			when can you collect
+				bro sends date
+					thanks and please collect on new date
+	alert bro about upcoming collection 15 mins earlier promised time and date
+	ask bro whether they collected the money
+		yes
+			full or partial
+				full
+					thanks for collecting
+				partial
+					how much did you collect
+						bro sends money amount
+							when will he collect the rest of amount
+								bro sends date
+									thanks and please collect the new amount on new date
+		no
+			when can you collect
+				bro sends date
+					thanks and please collect on new date
+
+
+
+flow for retention
+
+business call retention approval
+	task create
+	ask bro whether they can contact the customer (क्या आप ग्राहक से संपर्क कर सकते हैं ?)
+		yes
+			thanks and please connect (धन्यवाद। कृपया ग्राहक से जल्दी संपर्क करें। )
+		no
+			when can you connect (आप किस तारीख को ग्राहक से संपर्क करना चाहेंगे ?)
+				bro sends date
+					thanks and please connect on new date (धन्यवाद।  कृपया  {new_date} तारीख को ग्राहक से संपर्क करें। )
+	alert bro about upcoming retention connection 15 mins earlier decided time and date 
+प्रिय {agent name },
+आपके पास अगले १५ मिनट में एक रिटेंशन संबंधी कार्य है।  आपसे अनुरोध है कि दिनांक {new_date} को {new_time} बजे {customer_name} से संपर्क करें। 
+धन्यवाद। 
+	half an hour later 
+	ask bro whether they have connected with the customer
+		yes
+			thanks for connecting with the customer
+		no
+			when can you connect
+				bro sends date
+					thanks and please connect on new date
+
+
+**questions that can be asked--
+purpose of loan?
+amount proposed?
+income per month?
+expenses per month?
+loan amount?
+
+
+
+❌
+flow for wrong number correction
+
+business call wrong number request
+	task create
+	ask bro whether they can rectify that number by next day
+		yes
+			thanks and please rectify
+		no
+			when can you rectify
+				bro sends date
+					thanks and please rectify on new date
+	ask bro whether they rectified the contact of customer
+		yes
+			thanks for rectifying
+		no
+			when can you rectify
+				bro sends date
+					thanks and please rectify on new date
+
+
+
+✅
+flow for wrong number request
+
+business call wrong number request
+	task create
+	if alternate number present
+		ask bro to rectify the contact by calling on that number
+		ask bro after an hour whether he rectified the number
+			yes
+				thank you for rectifying
+			no
+				would you like to try again?
+					yes
+						when would you like to try again
+							bro sends date
+								thanks please try again by this date 
+					no
+						reason
+							bro enters reason
+								ask bro date by which he can meet with customer and correct the contact
+									bro enters date
+										thanks and please rectify on this date
+	if alternate number not present
+		ask bro date by which he can meet with customer and correct the contact
+			bro enters date
+				thanks and please rectify on this date
+
+
+
+
+switch off
+wrong number
+invalid number
+not answering
+others
+
+
+
+
