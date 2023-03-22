@@ -61,7 +61,7 @@ def get_all_leads_in_leadlist():
 
     for data in response.json():
         all_leadlist_contacts[data["field_0"]] = data["lead_id"]
-    print(all_leadlist_contacts)
+    # print(all_leadlist_contacts)
     return all_leadlist_contacts
 
 
@@ -469,6 +469,7 @@ all_df = pd.concat(
 ).reset_index(drop=True)
 
 print(all_df.head())
+print("shape of all_df", all_df.shape)
 
 
 ## inserting data into broadcast/leadlist
