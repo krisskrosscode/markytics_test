@@ -1,4 +1,4 @@
-# %%
+
 # imports
 import json
 import os
@@ -65,26 +65,22 @@ def get_all_leads_in_leadlist():
     return all_leadlist_contacts
 
 
-# %%
-pd.set_option("display.max_columns", 500)
 
-# %%
+
 
 today_date = str(date.today())
 today_date = datetime.strptime(today_date, "%Y-%m-%d").strftime("%Y-%m-%d")
 sql_query = f""" SET NOCOUNT ON;EXEC [{db}].[dbo].[SP_UserHierarchy_Dynamic_07Jan23] @userid = 1;SET NOCOUNT OFF """
 hierarchy_df = pd.read_sql_query(sql_query, engine)
 
-# %%
 bro_df = hierarchy_df[hierarchy_df["RoleId"] == 55][["UserID", "UserName"]]
 
-# %%
 bro_df.rename(
     columns={"UserID": "BRO_UserID", "UserName": "BRO_UserName"}, inplace=True
 )
-bro_df
 
-# %%
+
+
 sql_query = f"""SET NOCOUNT ON;EXEC [{db}].[dbo].[SP_UserHierarchy_Dynamic_07Jan23] @userid = 1;SET NOCOUNT OFF"""
 df = pd.read_sql_query(sql_query, engine)
 df = df.replace(["Prayagraj Division", "Lucknow Division"], ["Prayagraj", "Lucknow"])
@@ -173,7 +169,7 @@ dF = pd.merge(
     M3, div_df, left_on="Region_ReportingBUId", right_on="Div_BUID", how="left"
 ).drop_duplicates(subset="BRO_UserID")
 
-# %%
+
 
 cols_to_fill = [
     "BM_BUID",
@@ -191,16 +187,8 @@ cols_to_fill = [
 ]
 dF[cols_to_fill] = dF[cols_to_fill].fillna(0).astype("int", errors="ignore")
 
-# %%
-dF
 
-# %%
-
-
-# %% [markdown]
 # task count
-
-# %%
 today_date = datetime.strptime(str(date.today()), "%Y-%m-%d").strftime("%Y-%m-%d")
 sql_query = f""" SET NOCOUNT ON;EXEC [{db}].[dbo].[SP_UserHierarchy_Dynamic_07Jan23] @userid = 1;SET NOCOUNT OFF """
 hierarchy_df = pd.read_sql_query(sql_query, engine)
@@ -297,28 +285,22 @@ main_df["wrong_number_count"] = main_df["wrong_number_count"].astype(
 main_df["UserID"] = main_df["UserID"].astype(int, errors="ignore")
 main_df["UserName"] = main_df["UserName"].apply(lambda x: x.title())
 
-# %%
+
 main_df = main_df.drop("assigned_to", axis=1)
 
-# %%
 
 
-# %%
+
+
 main_df.rename(
     columns={"UserID": "BRO_UserID", "UserName": "BRO_UserName"}, inplace=True
 )
 main_df
 
-# %%
-dF[dF["BRO_UserID"] == 31810]
 
-# %%
+# dF[dF["BRO_UserID"] == 31810]
 
 
-# %%
-
-
-# %%
 main_df = (
     pd.merge(
         left=main_df, right=dF, left_on="BRO_UserID", right_on="BRO_UserID", how="left"
@@ -327,13 +309,13 @@ main_df = (
     .rename(columns={"BRO_UserName_x": "BRO_UserName"})
 )
 
-# %%
-main_df
 
-# %%
-main_df.columns
+# main_df
 
-# %%
+
+# main_df.columns
+
+
 brogroup_df = (
     main_df.groupby("BRO_UserID")
     .agg(
@@ -357,10 +339,10 @@ contact_df = pd.read_sql_query(sql_query, engine)
 brogroup_df = pd.merge(brogroup_df, contact_df, on="UserID", how="left").dropna()
 brogroup_df
 
-# %%
+
 ## Creating groups based on roles
 
-# %%
+
 bmgroup_df = (
     main_df.groupby("BM_UserID")
     .agg(
@@ -384,10 +366,10 @@ contact_df = pd.read_sql_query(sql_query, engine)
 bmgroup_df = pd.merge(bmgroup_df, contact_df, on="UserID", how="left").dropna()
 bmgroup_df
 
-# %%
 
 
-# %%
+
+
 hubgroup_df = (
     main_df.groupby("Hub_UserID")
     .agg(
@@ -411,7 +393,7 @@ contact_df = pd.read_sql_query(sql_query, engine)
 hubgroup_df = pd.merge(hubgroup_df, contact_df, on="UserID", how="left").dropna()
 hubgroup_df
 
-# %%
+
 regiongroup_df = (
     main_df.groupby("Region_UserID")
     .agg(
@@ -435,7 +417,7 @@ contact_df = pd.read_sql_query(sql_query, engine)
 regiongroup_df = pd.merge(regiongroup_df, contact_df, on="UserID", how="left").dropna()
 regiongroup_df
 
-# %%
+
 divgroup_df = (
     main_df.groupby("Div_UserID")
     .agg(
@@ -452,10 +434,10 @@ divgroup_df = (
     .rename(columns={"Div_UserID": "UserID", "Div_UserName": "UserName"})
 )
 
-# %%
 
 
-# %%
+
+
 userid_tuple = tuple(divgroup_df["UserID"].unique().tolist())
 sql_query = f""" SELECT CallingNumber,UserID FROM Sonata_Connect.dbo.accounts_calling_number_list
     WHERE UserID in {userid_tuple} """
@@ -463,7 +445,7 @@ contact_df = pd.read_sql_query(sql_query, engine)
 divgroup_df = pd.merge(divgroup_df, contact_df, on="UserID", how="left").dropna()
 divgroup_df
 
-# %%
+
 all_df = pd.concat(
     [brogroup_df, bmgroup_df, hubgroup_df, regiongroup_df, divgroup_df], axis=0
 ).reset_index(drop=True)
@@ -563,8 +545,8 @@ for data in all_df.to_dict("r"):
             "field_1": data["UserName"],
             "field_5": field_5_string,
         }
-        # response = requests.put(url, headers=headers, json= payload)
-        # print(response.text)
+        response = requests.put(url, headers=headers, json= payload)
+        print(response.text)
 
     else:
         url = f"https://api-smartflo.tatateleservices.com/v1/broadcast/lead/{MORNING_LEAD_LIST_ID}"
@@ -587,6 +569,6 @@ for data in all_df.to_dict("r"):
             "Content-Type": "application/json",
         }
 
-        # response = requests.request("POST", url, headers=headers, data=payload)
+        response = requests.request("POST", url, headers=headers, data=payload)
 
-        # print(response.text)
+        print(response.text)

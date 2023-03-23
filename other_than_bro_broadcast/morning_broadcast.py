@@ -216,95 +216,95 @@ print(len(final_df['UserID'].unique()))
 # print(final_df[final_df['CallingNumber'] == '7080200377'])
 print(len(final_df['CallingNumber'].unique()))
 
-# ## stop broadcast -> harshal
-# stop_evening_broadcast_url = f"https://api-smartflo.tatateleservices.com/v1/broadcast/end/{EVENING_BROADCAST_ID}"
-# stop_morning_broadcast_url = f"https://api-smartflo.tatateleservices.com/v1/broadcast/end/{MORNING_BROADCAST_ID}"
+## stop broadcast -> harshal
+stop_evening_broadcast_url = f"https://api-smartflo.tatateleservices.com/v1/broadcast/end/{EVENING_BROADCAST_ID}"
+stop_morning_broadcast_url = f"https://api-smartflo.tatateleservices.com/v1/broadcast/end/{MORNING_BROADCAST_ID}"
 
-# headers = {
-#     "accept": "application/json",
-#     "Authorization": auth_token
-# }
-# stop_morning_broadcast_response = requests.get(stop_morning_broadcast_url, headers=headers)
-# stop_evening_broadcast_response = requests.get(stop_evening_broadcast_url, headers=headers)
-# print(stop_morning_broadcast_response.text)
-# print(stop_evening_broadcast_response.text)
+headers = {
+    "accept": "application/json",
+    "Authorization": auth_token
+}
+stop_morning_broadcast_response = requests.get(stop_morning_broadcast_url, headers=headers)
+stop_evening_broadcast_response = requests.get(stop_evening_broadcast_url, headers=headers)
+print(stop_morning_broadcast_response.text)
+print(stop_evening_broadcast_response.text)
 
-# ## updating lead lists with new values 
-# pending_count_hindi_text = ' कार्य शेष हैं।'
-# collection_count_hindi_text = ' कलेक्शन संबंधी कार्य हैं । '
-# proposal_count_hindi_text = ' प्रपोजल संबंधी कार्य हैं । '
-# retention_count_hindi_text = ' रिटेंशन संबंधी कार्य हैं । '
-# wrong_number_count_hindi_text = ' गलत फोन नंबर सुधार संबंधी कार्य हैं । '
-
-
-
-# leadlist = get_all_leads_in_leadlist()
-
-# for data in final_df.to_dict('r'):
-#     """ Updating lead list """
-#     field_5_string = f"।।आपके पास।।।।,"  ## stores all counts as formatted string
-
-#     pending_count = data['Pending_Count']
-#     field_5_string += ((str(pending_count) + pending_count_hindi_text + '। जिनमें से ,') if pending_count != 0 else '')
-
-#     collection_count = data['collection_count']
-#     field_5_string += ((str(collection_count) + collection_count_hindi_text) if collection_count != 0 else '')
-
-#     proposal_count = data['proposal_count']
-#     field_5_string += ((str(proposal_count) + proposal_count_hindi_text) if proposal_count != 0 else '')
-
-#     retention_count = data['retention_count']
-#     field_5_string += ((str(retention_count) + retention_count_hindi_text) if retention_count != 0 else '')
-
-
-#     wrong_number_count = data['wrong_number_count']
-#     field_5_string += ((str(wrong_number_count) + wrong_number_count_hindi_text) if wrong_number_count != 0 else '')
+## updating lead lists with new values 
+pending_count_hindi_text = ' कार्य शेष हैं।'
+collection_count_hindi_text = ' कलेक्शन संबंधी कार्य हैं । '
+proposal_count_hindi_text = ' प्रपोजल संबंधी कार्य हैं । '
+retention_count_hindi_text = ' रिटेंशन संबंधी कार्य हैं । '
+wrong_number_count_hindi_text = ' गलत फोन नंबर सुधार संबंधी कार्य हैं । '
 
 
 
-#     # ।।।।   ,,..सोनाटा फाइनेंस सारथि एप्लीकेशन में आपका स्वागत है ! \\
-#     #     प्रिय {data['UserName']} जी, आज आपको निम्न कार्य सूचि प्राथमिकता से सम्पूर्ण करनी है! \\
-#     #     आपके पास।।।। 
-#     # print(data['CallingNumber'], "//////////////////")
-#     if ('+91'+ data['CallingNumber']) in leadlist.keys():
-#         # data['status'] = '1'
-#         # update_lead(leadlist['+91' + '9162841833'])
-#         # print(data['CallingNumber'])
-#         lead_id = leadlist['+91' + data['CallingNumber']]  #leadlist['+91' + '9162841833']
-#         url = f"https://api-smartflo.tatateleservices.com/v1/broadcast/lead/{lead_id}" ## update lead api call
+leadlist = get_all_leads_in_leadlist()
 
-#         headers = {
-#             "accept": "application/json",
-#             "Authorization": auth_token,
-#             "content-type": "application/json"
-#         }
-#         payload = {
-#             'dial_status' : '1',
-#             'field_1': data['UserName'],
-#             'field_5': field_5_string
-#         }
-#         # response = requests.put(url, headers=headers, json= payload)
-#         # print(response.text)
+for data in final_df.to_dict('r'):
+    """ Updating lead list """
+    field_5_string = f"।।आपके पास।।।।,"  ## stores all counts as formatted string
+
+    pending_count = data['Pending_Count']
+    field_5_string += ((str(pending_count) + pending_count_hindi_text + '। जिनमें से ,') if pending_count != 0 else '')
+
+    collection_count = data['collection_count']
+    field_5_string += ((str(collection_count) + collection_count_hindi_text) if collection_count != 0 else '')
+
+    proposal_count = data['proposal_count']
+    field_5_string += ((str(proposal_count) + proposal_count_hindi_text) if proposal_count != 0 else '')
+
+    retention_count = data['retention_count']
+    field_5_string += ((str(retention_count) + retention_count_hindi_text) if retention_count != 0 else '')
+
+
+    wrong_number_count = data['wrong_number_count']
+    field_5_string += ((str(wrong_number_count) + wrong_number_count_hindi_text) if wrong_number_count != 0 else '')
+
+
+
+    # ।।।।   ,,..सोनाटा फाइनेंस सारथि एप्लीकेशन में आपका स्वागत है ! \\
+    #     प्रिय {data['UserName']} जी, आज आपको निम्न कार्य सूचि प्राथमिकता से सम्पूर्ण करनी है! \\
+    #     आपके पास।।।। 
+    # print(data['CallingNumber'], "//////////////////")
+    if ('+91'+ data['CallingNumber']) in leadlist.keys():
+        # data['status'] = '1'
+        # update_lead(leadlist['+91' + '9162841833'])
+        # print(data['CallingNumber'])
+        lead_id = leadlist['+91' + data['CallingNumber']]  #leadlist['+91' + '9162841833']
+        url = f"https://api-smartflo.tatateleservices.com/v1/broadcast/lead/{lead_id}" ## update lead api call
+
+        headers = {
+            "accept": "application/json",
+            "Authorization": auth_token,
+            "content-type": "application/json"
+        }
+        payload = {
+            'dial_status' : '1',
+            'field_1': data['UserName'],
+            'field_5': field_5_string
+        }
+        response = requests.put(url, headers=headers, json= payload)
+        print(response.text)
  
-#     else: 
-#         url = f"https://api-smartflo.tatateleservices.com/v1/broadcast/lead/{MORNING_LEAD_LIST_ID}"
+    else: 
+        url = f"https://api-smartflo.tatateleservices.com/v1/broadcast/lead/{MORNING_LEAD_LIST_ID}"
 
-#         payload = json.dumps({
-#         "field_0": data['CallingNumber'],
-#         # "field_0": '9162841833',
-#         "field_1": data['UserName'],
-#         "field_5": field_5_string,
-#         # "field_6": (str(data['collection_count']) + collection_count_hindi_text) if data['collection_count'] != 0 else '',
-#         # "field_7": (str(data['proposal_count']) + proposal_count_hindi_text) if data['proposal_count'] != 0 else '',
-#         # "field_8": (str(data['retention_count']) + retention_count_hindi_text) if data['retention_count'] != 0 else '',
-#         # "field_9": (str(data['wrong_number_count']) + wrong_number_count_hindi_text if data['wrong_number_count'] != 0 else '' ),
-#         })
-#         headers = {
-#         'Accept': 'application/json',
-#         'Authorization': auth_token,
-#         'Content-Type': 'application/json'
-#         }
+        payload = json.dumps({
+        "field_0": data['CallingNumber'],
+        # "field_0": '9162841833',
+        "field_1": data['UserName'],
+        "field_5": field_5_string,
+        # "field_6": (str(data['collection_count']) + collection_count_hindi_text) if data['collection_count'] != 0 else '',
+        # "field_7": (str(data['proposal_count']) + proposal_count_hindi_text) if data['proposal_count'] != 0 else '',
+        # "field_8": (str(data['retention_count']) + retention_count_hindi_text) if data['retention_count'] != 0 else '',
+        # "field_9": (str(data['wrong_number_count']) + wrong_number_count_hindi_text if data['wrong_number_count'] != 0 else '' ),
+        })
+        headers = {
+        'Accept': 'application/json',
+        'Authorization': auth_token,
+        'Content-Type': 'application/json'
+        }
 
-#         # response = requests.request("POST", url, headers=headers, data=payload)
+        response = requests.request("POST", url, headers=headers, data=payload)
 
-#         # print(response.text)
+        print(response.text)
