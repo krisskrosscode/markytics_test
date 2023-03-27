@@ -54,6 +54,61 @@ def cfu_3(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload)
     print(response.text)
+    # response = requests.request("GET", url, headers=headers, data=payload)
+    url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
+    response = requests.request("POST", url)
+
+
+def ret_1(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
+    """Retention Followup"""
+    url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to=9162841833&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%86%E0%A4%88%E0%A4%A1%E0%A5%80%3A+{f1}%0A%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%B6%E0%A5%8D%E0%A4%B0%E0%A5%80%E0%A4%AE%E0%A4%BE%E0%A4%A8+{f2}%28{f3}%29+%E0%A4%B8%E0%A5%87+%E0%A4%8F%E0%A4%95+%E0%A4%A8%E0%A4%AF%E0%A4%BE+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B8%E0%A5%8C%E0%A4%82%E0%A4%AA%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88%E0%A5%A4%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3%3A+{f4}%28{f5}%29%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%A5%E0%A4%AE%E0%A4%BF%E0%A4%95%E0%A4%A4%E0%A4%BE+{f6}+%E0%A4%B9%E0%A5%88%E0%A5%A4%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%95%E0%A5%80+%E0%A4%B8%E0%A4%AE%E0%A4%AF+%E0%A4%B8%E0%A5%80%E0%A4%AE%E0%A4%BE+%E0%A4%B9%E0%A5%88+{f7}%2C{f8}%0A%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%BF%E0%A4%A4+%E0%A4%8B%E0%A4%A3+%E0%A4%B0%E0%A4%BE%E0%A4%B6%E0%A4%BF+{f9}%0A%E0%A4%8B%E0%A4%A3+%E0%A4%95%E0%A4%BE+%E0%A4%89%E0%A4%A6%E0%A5%8D%E0%A4%A6%E0%A5%87%E0%A4%B6%E0%A5%8D%E0%A4%AF+{f10}%0A%E0%A4%95%E0%A5%8D%E0%A4%AF%E0%A4%BE+%E0%A4%86%E0%A4%AA+%E0%A4%87%E0%A4%B8+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%95%E0%A5%8B+%E0%A4%AA%E0%A5%82%E0%A4%B0%E0%A4%BE+%E0%A4%95%E0%A4%B0+%E0%A4%AA%E0%A4%BE%E0%A4%8F%E0%A4%82%E0%A4%97%E0%A5%87%3F&isTemplate=true&header=%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%87+%E0%A4%AA%E0%A4%BE%E0%A4%B8+%E0%A4%8F%E0%A4%95+%E0%A4%A8%E0%A4%AF%E0%A4%BE+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B9%E0%A5%88"
+    payload={}
+    headers = {}
+    response = requests.request("GET", url, headers=headers, data=payload)
+    print(response.text)
+    # response = requests.request("GET", url, headers=headers, data=payload)
+    url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
+    response = requests.request("POST", url)
+
+
+def ret_2(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
+    """Retention Reminder"""
+    url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to=9162841833&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%AF%E0%A4%BE%E0%A4%A6+%E0%A4%A6%E0%A4%BF%E0%A4%B2%E0%A4%BE%E0%A4%AF%E0%A4%BE+%E0%A4%9C%E0%A4%BE%E0%A4%A4%E0%A4%BE+%E0%A4%B9%E0%A5%88+%E0%A4%95%E0%A5%87+%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%87+%E0%A4%AA%E0%A4%BE%E0%A4%B8+%E0%A4%86%E0%A4%97%E0%A4%BE%E0%A4%AE%E0%A5%80+%E0%A4%B8%E0%A4%AE%E0%A4%AF+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%8F%E0%A4%95+%E0%A4%95%E0%A4%B2%E0%A5%87%E0%A4%95%E0%A5%8D%E0%A4%B6%E0%A4%A8+%E0%A4%95%E0%A4%BE+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B9%E0%A5%88%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%86%E0%A4%88%E0%A4%A1%E0%A5%80%3A+{f1}%0A%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%B6%E0%A5%8D%E0%A4%B0%E0%A5%80%E0%A4%AE%E0%A4%BE%E0%A4%A8+{f2}%28{f3}%29+%E0%A4%B8%E0%A5%87+%E0%A4%8F%E0%A4%95+%E0%A4%A8%E0%A4%AF%E0%A4%BE+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B8%E0%A5%8C%E0%A4%82%E0%A4%AA%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88%E0%A5%A4%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3%3A+{f4}%28{f5}%29%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%A5%E0%A4%AE%E0%A4%BF%E0%A4%95%E0%A4%A4%E0%A4%BE+{f6}+%E0%A4%B9%E0%A5%88%E0%A5%A4%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%95%E0%A5%80+%E0%A4%B8%E0%A4%AE%E0%A4%AF+%E0%A4%B8%E0%A5%80%E0%A4%AE%E0%A4%BE+%E0%A4%B9%E0%A5%88+{f7}%2C{f8}%0A%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%BF%E0%A4%A4+%E0%A4%8B%E0%A4%A3+%E0%A4%B0%E0%A4%BE%E0%A4%B6%E0%A4%BF+{f9}%0A%E0%A4%8B%E0%A4%A3+%E0%A4%95%E0%A4%BE+%E0%A4%89%E0%A4%A6%E0%A5%8D%E0%A4%A6%E0%A5%87%E0%A4%B6%E0%A5%8D%E0%A4%AF+{f10}"
+    payload={}
+    headers = {}
+    response = requests.request("GET", url, headers=headers, data=payload)
+    print(response.text)
+    # response = requests.request("GET", url, headers=headers, data=payload)
+    url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
+    response = requests.request("POST", url)
+
+
+def ret_3(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
+    """Retention Confirmation"""
+    url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to=9162841833&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%86%E0%A4%88%E0%A4%A1%E0%A5%80%3A+{f1}%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3%3A+{f2}%28{f3}%29%0A%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%BF%E0%A4%A4+%E0%A4%8B%E0%A4%A3+%E0%A4%B0%E0%A4%BE%E0%A4%B6%E0%A4%BF+{f9}%0A%E0%A4%8B%E0%A4%A3+%E0%A4%95%E0%A4%BE+%E0%A4%89%E0%A4%A6%E0%A5%8D%E0%A4%A6%E0%A5%87%E0%A4%B6%E0%A5%8D%E0%A4%AF+{f10}%0A%E0%A4%95%E0%A5%8D%E0%A4%AF%E0%A4%BE+%E0%A4%86%E0%A4%AA%E0%A4%A8%E0%A5%87+%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%B9%E0%A4%95+%E0%A4%B8%E0%A5%87+%E0%A4%B8%E0%A4%82%E0%A4%AA%E0%A4%B0%E0%A5%8D%E0%A4%95+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F&isTemplate=true&header=%E0%A4%B0%E0%A4%BF%E0%A4%9F%E0%A5%87%E0%A4%82%E0%A4%B6%E0%A4%A8+%E0%A4%95%E0%A5%80+%E0%A4%B8%E0%A5%8D%E0%A4%A5%E0%A4%BF%E0%A4%A4%E0%A4%BF"
+    payload={}
+    headers = {}
+    response = requests.request("GET", url, headers=headers, data=payload)
+    print(response.text)
+    # response = requests.request("GET", url, headers=headers, data=payload)
+    url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
+    response = requests.request("POST", url)
+
+def WN_Alternate(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
+    """ If alternate number is present """
+    url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to=9162841833&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%86%E0%A4%88%E0%A4%A1%E0%A5%80%3A+{f1}%0A%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%B6%E0%A5%8D%E0%A4%B0%E0%A5%80%E0%A4%AE%E0%A4%BE%E0%A4%A8+{f2}+%28{f3}%29+%E0%A4%B8%E0%A5%87+%E0%A4%8F%E0%A4%95+%E0%A4%A8%E0%A4%AF%E0%A4%BE+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B8%E0%A5%8C%E0%A4%82%E0%A4%AA%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88%E0%A5%A4%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3%3A+{f4}+%28{f5}%29%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%A5%E0%A4%AE%E0%A4%BF%E0%A4%95%E0%A4%A4%E0%A4%BE+{f6}+%E0%A4%B9%E0%A5%88%E0%A5%A4%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%95%E0%A5%80+%E0%A4%B8%E0%A4%AE%E0%A4%AF+%E0%A4%B8%E0%A5%80%E0%A4%AE%E0%A4%BE+%E0%A4%B9%E0%A5%88+{f7}+{f8}%0A%E0%A4%B5%E0%A5%88%E0%A4%95%E0%A4%B2%E0%A5%8D%E0%A4%AA%E0%A4%BF%E0%A4%95+%E0%A4%AB%E0%A4%BC%E0%A5%8B%E0%A4%A8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+{f9}%0A%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%95%E0%A4%BE+%E0%A4%97%E0%A4%B2%E0%A4%A4+%E0%A5%9E%E0%A5%8B%E0%A4%A8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+%E0%A4%B8%E0%A5%81%E0%A4%A7%E0%A4%BE%E0%A4%B0%E0%A4%A8%E0%A4%BE+%E0%A4%B9%E0%A5%88%E0%A5%A4+%0A%E0%A4%95%E0%A5%8D%E0%A4%AF%E0%A4%BE+%E0%A4%86%E0%A4%AA+%E0%A4%87%E0%A4%B8+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%95%E0%A5%8B+%E0%A4%AA%E0%A5%82%E0%A4%B0%E0%A4%BE+%E0%A4%95%E0%A4%B0+%E0%A4%AA%E0%A4%BE%E0%A4%8F%E0%A4%82%E0%A4%97%E0%A5%87%3F&isTemplate=true&header=%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%87+%E0%A4%AA%E0%A4%BE%E0%A4%B8+%E0%A4%8F%E0%A4%95+%E0%A4%A8%E0%A4%AF%E0%A4%BE+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B9%E0%A5%88"
+    payload={}
+    headers = {}
+    response = requests.request("GET", url, headers=headers, data=payload)
+    print(response.text)
+    url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
+    response = requests.request("POST", url)
+
+
+def WN_No_Alternate(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
+    """ If alternate number is NOT present """
+    pass
+
 #thank you for putting date alert
 #collection status alert
 #payment full or partial alert
@@ -89,8 +144,17 @@ for flow in queue_df.to_dict('r'):
             cfu_2(flow['id'],flow['contact_number'],flow['field_1'],flow['field_2'],flow['field_3'],flow['field_4'],flow['field_5'],flow['field_6'],flow['field_7'],flow['field_8'],flow['field_9'],flow['field_10'],flow['field_11'],flow['field_12'])
         elif flow['flow_name'] == 'Collection Confirmation':
             cfu_3(flow['id'],flow['contact_number'],flow['field_1'],flow['field_2'],flow['field_3'],flow['field_4'],flow['field_5'],flow['field_6'],flow['field_7'],flow['field_8'],flow['field_9'],flow['field_10'],flow['field_11'],flow['field_12'])
-
-
+        elif flow['flow_name'] == 'Retention FollowUp':
+            ret_1(flow['id'],flow['contact_number'],flow['field_1'],flow['field_2'],flow['field_3'],flow['field_4'],flow['field_5'],flow['field_6'],flow['field_7'],flow['field_8'],flow['field_9'],flow['field_10'],flow['field_11'],flow['field_12'])
+        elif flow['flow_name'] == 'Retention Reminder':
+            ret_2(flow['id'],flow['contact_number'],flow['field_1'],flow['field_2'],flow['field_3'],flow['field_4'],flow['field_5'],flow['field_6'],flow['field_7'],flow['field_8'],flow['field_9'],flow['field_10'],flow['field_11'],flow['field_12'])
+        elif flow['flow_name'] == 'Retention Confirmation':
+            ret_3(flow['id'],flow['contact_number'],flow['field_1'],flow['field_2'],flow['field_3'],flow['field_4'],flow['field_5'],flow['field_6'],flow['field_7'],flow['field_8'],flow['field_9'],flow['field_10'],flow['field_11'],flow['field_12'])
+        
+        elif flow['flow_name'] == 'WN Alternate':
+            WN_Alternate(flow['id'],flow['contact_number'],flow['field_1'],flow['field_2'],flow['field_3'],flow['field_4'],flow['field_5'],flow['field_6'],flow['field_7'],flow['field_8'],flow['field_9'],flow['field_10'],flow['field_11'],flow['field_12'])
+        elif flow['flow_name'] == 'WN No Alternate':
+            WN_No_Alternate(flow['id'],flow['contact_number'],flow['field_1'],flow['field_2'],flow['field_3'],flow['field_4'],flow['field_5'],flow['field_6'],flow['field_7'],flow['field_8'],flow['field_9'],flow['field_10'],flow['field_11'],flow['field_12'])
 #collab with whatsapp callback function
 #on proper reply from user and proper response to user, we update the queue's stage, update_time and response
 #based on the stage we work our way out(basically replace the logic of whatsapp log with whatsapp queue, instead of latest log we choose running flow)

@@ -430,13 +430,13 @@ stop_morning_broadcast_url = (
 )
 
 headers = {"accept": "application/json", "Authorization": auth_token}
-stop_morning_broadcast_response = requests.get(
-    stop_morning_broadcast_url, headers=headers
-)
+# stop_morning_broadcast_response = requests.get(
+#     stop_morning_broadcast_url, headers=headers
+# )
 stop_evening_broadcast_response = requests.get(
     stop_evening_broadcast_url, headers=headers
 )
-print(stop_morning_broadcast_response.text)
+# print(stop_morning_broadcast_response.text)
 print(stop_evening_broadcast_response.text)
 
 

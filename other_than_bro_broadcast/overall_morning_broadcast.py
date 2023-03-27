@@ -65,7 +65,17 @@ def get_all_leads_in_leadlist():
     return all_leadlist_contacts
 
 
+def start_morning_broadcast(authorization_token, morning_broadcast_id):
+    url = f"https://api-smartflo.tatateleservices.com/v1/broadcast/start/{morning_broadcast_id}"
 
+    headers = {
+        "accept": "application/json",
+        "Authorization": authorization_token
+    }
+
+    start_broadcast_response = requests.get(url, headers=headers)
+
+    print(start_broadcast_response.text)
 
 
 today_date = str(date.today())
@@ -528,11 +538,10 @@ for data in all_df.to_dict("r"):
     # print(data['CallingNumber'], "//////////////////")
     if ("+91" + data["CallingNumber"]) in leadlist.keys():
         # data['status'] = '1'
-        # update_lead(leadlist['+91' + '9162841833'])
         # print(data['CallingNumber'])
         lead_id = leadlist[
             "+91" + data["CallingNumber"]
-        ]  # leadlist['+91' + '9162841833']
+        ]
         url = f"https://api-smartflo.tatateleservices.com/v1/broadcast/lead/{lead_id}"  ## update lead api call
 
         headers = {
@@ -554,7 +563,6 @@ for data in all_df.to_dict("r"):
         payload = json.dumps(
             {
                 "field_0": data["CallingNumber"],
-                # "field_0": '9162841833',
                 "field_1": data["UserName"],
                 "field_5": field_5_string,
                 # "field_6": (str(data['collection_count']) + collection_count_hindi_text) if data['collection_count'] != 0 else '',
@@ -572,3 +580,6 @@ for data in all_df.to_dict("r"):
         response = requests.request("POST", url, headers=headers, data=payload)
 
         print(response.text)
+
+
+start_morning_broadcast(authorization_token=auth_token, morning_broadcast_id=MORNING_BROADCAST_ID)
