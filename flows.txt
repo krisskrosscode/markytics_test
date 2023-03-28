@@ -40,17 +40,18 @@ business call retention approval
 				bro sends date
 					thanks and please connect on new date (धन्यवाद।  कृपया  {new_date} तारीख को ग्राहक से संपर्क करें। )
 	alert bro about upcoming retention connection 15 mins earlier decided time and date 
-प्रिय {agent name },
-आपके पास अगले १५ मिनट में एक रिटेंशन संबंधी कार्य है।  आपसे अनुरोध है कि दिनांक {new_date} को {new_time} बजे {customer_name} से संपर्क करें। 
-धन्यवाद। 
+(प्रिय {agent name },
+ आपके पास अगले १५ मिनट में एक रिटेंशन संबंधी कार्य है।  आपसे अनुरोध है कि दिनांक {new_date} को {new_time} बजे {customer_name} से संपर्क करें। 
+ धन्यवाद।) 
 	half an hour later 
-	ask bro whether they have connected with the customer
+	ask bro whether they have connected with the customer (प्रिय {agent name },
+	क्या आपने {customer_name} से रिटेंशन सम्बन्धी कार्य हेतु संपर्क किया ?)
 		yes
-			thanks for connecting with the customer
+			thanks for connecting with the customer (ग्राहक  से संपर्क करने के लिए धन्यवाद। )
 		no
 			when can you connect
 				bro sends date
-					thanks and please connect on new date
+					thanks and please connect on new date  ( # at time =  10:30)
 
 
 **questions that can be asked--
@@ -62,6 +63,7 @@ loan amount?
 
 
 
+cann you connect with the customer
 ❌
 flow for wrong number correction
 
@@ -95,7 +97,7 @@ business call wrong number request
 			yes
 				thank you for rectifying
 			no
-				would you like to try again?
+				would you like to try again? (1.1)
 					yes
 						when would you like to try again
 							bro sends date
@@ -111,6 +113,16 @@ business call wrong number request
 			bro enters date
 				thanks and please rectify on this date
 
+    ask bro whether they met the customer and rectified the number
+    	yes
+    		thanks for rectifying
+    	no
+    		ask reason
+    			bro sends reason
+    				ask bro date by which he can meet with customer and correct the contact
+						bro enters date
+							thanks and please rectify on this date
+
 
 
 
@@ -123,3 +135,6 @@ others
 
 
 
+
+==================================================
+ => New Retention flow
