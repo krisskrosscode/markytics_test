@@ -138,3 +138,79 @@ others
 
 ==================================================
  => New Retention flow
+
+ business call retention approval
+	task create
+		when can you connect (आप किस तारीख को ग्राहक से संपर्क करना चाहेंगे ?)
+			bro sends date
+				thanks and please connect on new date (धन्यवाद।  कृपया  {new_date} तारीख को ग्राहक से संपर्क करें। + add required details of subtasks )
+
+				
+	alert bro about upcoming retention connection 15 mins earlier decided time and date 
+(प्रिय {agent name },
+ आपके पास अगले १५ मिनट में एक रिटेंशन संबंधी कार्य है।  आपसे अनुरोध है कि दिनांक {new_date} को {new_time} बजे {customer_name} से संपर्क करें। 
+ धन्यवाद।) 
+	half an hour later 
+	ask bro whether they have connected with the customer (प्रिय {agent name },
+	क्या आपने {customer_name} से रिटेंशन सम्बन्धी कार्य हेतु संपर्क किया ?)
+		yes
+			thanks for connecting with the customer (ग्राहक  से संपर्क करने के लिए धन्यवाद। )
+		no
+			when can you connect
+				bro sends date
+					thanks and please connect on new date  ( # at time =  10:30)'
+
+Cat A - meet
+wrong number
+others
+
+Cat B - try again
+switched off, out of network or the customer did not pick up
+
+
+
+WNANP Alert
+queue and send this as a single alert/reminder:
+send BRO a message asking to call on this number and verify customer contact
+after send, update time for WNANP flow
+
+WNANP Flow
+
+flow start:
+after some time ask BRO whether they made the call(WMTC)
+WMTC yes, ask whether the number of customer is correct or not(NCON)
+NCON yes, send them thanks for correcting
+NCON no, ask for reason with bunch of options, others is one of those options
+if category A,
+if others, ask for feedback
+after feedback, ask date for meeting customer
+after date, ask time for meeting customer
+after time, send thanks[schedule a queue for this, WNV][endflow]
+if not others, ask date for meeting customer
+after date, ask time for meeting customer
+after time, send thanks[schedule a queue for this, WNV][endflow]
+if category B, ask date when they would like to try again
+after date, ask time for meeting customer
+after time, send thanks[schedule a queue for this, WNANP flow part][endflow]
+WMTC no, enter the date when you will call
+after date, enter the time when you will call
+after time, send thanks[schedule a queue for this, WNANP flow part][endflow]
+
+WNANNP
+
+Send BRO a message with customer details asking date when they can meet and correct the customer contact
+after date, ask time for meeting customer
+after time, send thanks[schedule a queue for this, WNV][endflow]
+
+WNVALERT
+
+Send an alert to BRO for meeting and correcting customer contact
+
+WNVC
+
+Send BRO a message asking whether they corrected the number or not after meeting the customer
+WNVC yes, send thanks
+WNVC no, ask reason why they could not correct the data
+after reason, ask date when they can revisit the customer
+after date, ask time when they can revisit the customer
+after time, send thanks.
