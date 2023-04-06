@@ -1,4 +1,9 @@
+"""UPDATES TO SCRIPT
+ - March 22 2023 : Added other than BRO data to the script
+ - April 6 2022 : Removed broadcast start. THis script now only updates the lead list
+                : Added Logger functionality
 
+"""
 # imports
 import json
 import os
@@ -582,4 +587,5 @@ for data in all_df.to_dict("r"):
         print(response.text)
 
 
-start_morning_broadcast(authorization_token=auth_token, morning_broadcast_id=MORNING_BROADCAST_ID)
+# start_morning_broadcast(authorization_token=auth_token, morning_broadcast_id=MORNING_BROADCAST_ID)
+

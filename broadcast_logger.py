@@ -45,8 +45,8 @@ response = requests.request("GET", url, headers=headers, data=payload)
 
 data = pd.json_normalize(response.json())
 data = data[['id', 'lead_id', 'list_id','field_0', 'field_1', 'field_2', 'field_3','field_4', 'field_5','dial_status']]
-# print(data)
+print(data)
 print(data.columns)
 data['log_date'] = date.today()
-data['log_time'] = datetime.now().time() - timedelta(hours=1)
+data['log_time'] = (datetime.now() - timedelta(hours=1)).time().strftime('%H:%M')
 data.to_sql('broadcast_logs',con = engine,if_exists ='append',index =False)
