@@ -214,3 +214,42 @@ WNVC no, ask reason why they could not correct the data
 after reason, ask date when they can revisit the customer
 after date, ask time when they can revisit the customer
 after time, send thanks.
+
+
+===> TEMPLATES 
+
+[✅] Alternate present alert (wn_ap_alert)
+ data: customer name, customer code, alternate number
+
+✅Alternate call confirmation (wn_ap_confirmation)
+
+✅Alternate correct confirmation (wn_ap_conf)
+
+✅when will you call again? ask date (already present name : ask_date_to_connect)
+
+✅when will you call again? ask time (ask_time_to_connect)
+
+✅thanks for confirming (wn_ap_thanks_for_conf)
+
+✅select reason for not confirming (wn_ap_reason_for_not_conf)
+
+✅(others)please specify reason (wn_ap_ask_others_feedback)
+
+✅when can you visit customer? ask date (wn_ap_ask_meet_date)
+
+✅when can you visit customer? ask time (wn_ap_ask_meet_time)
+
+✅thanks and please visit customer x by date, time (wn_ap_visit_thanks_datetime)
+
+✅thanks and please call customer again by date, time (wn_ap_call_thanks_datetime)
+
+✅Alternate not present askdate (wn_noalternate_ask_date)
+
+✅WN visit alert (wn_visit_alert)
+
+✅WN visit confirmation (wn_visit_confirmation)
+
+
+
+
+
