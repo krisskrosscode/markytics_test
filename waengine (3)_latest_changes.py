@@ -15,7 +15,7 @@ server = "172.17.130.216"
 engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
 
 sql_query = f""" SELECT * FROM Sonata_Connect.dbo.WhatsAppQueue 
-WHERE status is NULL or status = 1 """
+WHERE status = 0 or status = 1 """
 queue_df=pd.read_sql_query(sql_query,engine)
 
 #filter queue by status, unique on userid and keep the first after ordering by id
