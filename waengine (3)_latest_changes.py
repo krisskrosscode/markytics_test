@@ -15,7 +15,7 @@ server = "172.17.130.216"
 engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
 
 sql_query = f""" SELECT * FROM Sonata_Connect.dbo.WhatsAppQueue 
-WHERE status = 0 or status = 1 """
+WHERE status = 0 or status = 1 or status IS NULL """
 queue_df=pd.read_sql_query(sql_query,engine)
 
 #filter queue by status, unique on userid and keep the first after ordering by id
@@ -187,7 +187,7 @@ def WNANP_flow(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
     #start flow, mark it as running
 # print("Queueueueueu" , queue_df.to_dict('r'))
 for flow in queue_df.to_dict('r'):
-    print("ffffff",flow['flow_name'])
+    print("ffffff",flow['flow_name'], flow['status'])
     if flow['status'] == 1:
         # if flow['update_time'] > (datetime.now() + timedelta(minutes=5)):
         if datetime.now() > (flow['update_time'] + timedelta(minutes=5)):
