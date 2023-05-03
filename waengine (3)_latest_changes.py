@@ -6,7 +6,11 @@ import requests
 from datetime import datetime, timedelta
 import warnings
 warnings.filterwarnings("ignore")
+import logging 
 
+logging.basicConfig(filename='waengine_logger.log', filemode='a', format='%(asctime)s : %(levelname)s : %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG) 
 #fetch queue data and other necessary data required
 user1 = "SFPL_Connect"
 password = "$%n5bF33%X"
@@ -17,6 +21,8 @@ engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=
 sql_query = f""" SELECT * FROM Sonata_Connect.dbo.WhatsAppQueue 
 WHERE status = 0 or status = 1 or status IS NULL """
 queue_df=pd.read_sql_query(sql_query,engine)
+
+logger.info('Connected to Database')
 
 #filter queue by status, unique on userid and keep the first after ordering by id
 queue_df.sort_values(by='id', inplace=True)
@@ -29,62 +35,102 @@ queue_df.to_csv('papa.csv')
 #on task create alert - 1
 def cfu_1(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
     # print(response.text)
+    logger.info('Collection FollowUp function called')
     url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to={user_number}&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%86%E0%A4%88%E0%A4%A1%E0%A5%80%3A+{f1}%0A%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%B6%E0%A5%8D%E0%A4%B0%E0%A5%80%E0%A4%AE%E0%A4%BE%E0%A4%A8+{f2}%28{f3}%29+%E0%A4%B8%E0%A5%87+%E0%A4%8F%E0%A4%95+%E0%A4%A8%E0%A4%AF%E0%A4%BE+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B8%E0%A5%8C%E0%A4%82%E0%A4%AA%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88%E0%A5%A4%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3%3A+{f4}%28{f5}%29%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%A5%E0%A4%AE%E0%A4%BF%E0%A4%95%E0%A4%A4%E0%A4%BE+{f6}+%E0%A4%B9%E0%A5%88%E0%A5%A4%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%95%E0%A5%80+%E0%A4%B8%E0%A4%AE%E0%A4%AF+%E0%A4%B8%E0%A5%80%E0%A4%AE%E0%A4%BE+%E0%A4%B9%E0%A5%88+{f7}%2C{f8}%0A%E0%A4%B0%E0%A4%BE%E0%A4%B6%E0%A4%BF+%E0%A4%8F%E0%A4%95%E0%A4%A4%E0%A5%8D%E0%A4%B0+%E0%A4%95%E0%A5%80+%E0%A4%9C%E0%A4%BE%E0%A4%A8%E0%A5%80+%E0%A4%B9%E0%A5%88+{f9}%0A%E0%A4%B8%E0%A4%82%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A4%B9+%E0%A4%B8%E0%A5%8D%E0%A4%A5%E0%A4%BE%E0%A4%A8+{f10}%0A%E0%A4%95%E0%A5%8D%E0%A4%AF%E0%A4%BE+%E0%A4%86%E0%A4%AA+%E0%A4%87%E0%A4%B8+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%95%E0%A5%8B+%E0%A4%AA%E0%A5%82%E0%A4%B0%E0%A4%BE+%E0%A4%95%E0%A4%B0+%E0%A4%AA%E0%A4%BE%E0%A4%8F%E0%A4%82%E0%A4%97%E0%A5%87%3F&isTemplate=true&header=%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%87+%E0%A4%AA%E0%A4%BE%E0%A4%B8+%E0%A4%8F%E0%A4%95+%E0%A4%A8%E0%A4%AF%E0%A4%BE+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B9%E0%A5%88"
     payload={}
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload)
-    url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
-    response = requests.request("POST", url)
+    engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
+    sql_query = f""" UPDATE dbo.WhatsAppQueue
+    SET stage = '1', status = 1
+    WHERE id = {id} """
+    conn = engine.connect()
+    conn.execute(sql_query)
+    # url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
+    # response = requests.request("POST", url)
+    logger.info("{response.text}  : Response CFU ")
     # print(response.text)
 #ask date alert - 3
 def cfu_2(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
+    logger.info('Collection Reminder function called')
     url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to={user_number}&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%AF%E0%A4%BE%E0%A4%A6+%E0%A4%A6%E0%A4%BF%E0%A4%B2%E0%A4%BE%E0%A4%AF%E0%A4%BE+%E0%A4%9C%E0%A4%BE%E0%A4%A4%E0%A4%BE+%E0%A4%B9%E0%A5%88+%E0%A4%95%E0%A5%87+%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%87+%E0%A4%AA%E0%A4%BE%E0%A4%B8+%E0%A4%86%E0%A4%97%E0%A4%BE%E0%A4%AE%E0%A5%80+%E0%A4%B8%E0%A4%AE%E0%A4%AF+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%8F%E0%A4%95+%E0%A4%95%E0%A4%B2%E0%A5%87%E0%A4%95%E0%A5%8D%E0%A4%B6%E0%A4%A8+%E0%A4%95%E0%A4%BE+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B9%E0%A5%88%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%86%E0%A4%88%E0%A4%A1%E0%A5%80%3A+{f1}%0A%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%B6%E0%A5%8D%E0%A4%B0%E0%A5%80%E0%A4%AE%E0%A4%BE%E0%A4%A8+{f2}%28{f3}%29+%E0%A4%B8%E0%A5%87+%E0%A4%8F%E0%A4%95+%E0%A4%A8%E0%A4%AF%E0%A4%BE+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B8%E0%A5%8C%E0%A4%82%E0%A4%AA%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88%E0%A5%A4%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3%3A+{f4}%28{f5}%29%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%A5%E0%A4%AE%E0%A4%BF%E0%A4%95%E0%A4%A4%E0%A4%BE+{f6}+%E0%A4%B9%E0%A5%88%E0%A5%A4%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%95%E0%A5%80+%E0%A4%B8%E0%A4%AE%E0%A4%AF+%E0%A4%B8%E0%A5%80%E0%A4%AE%E0%A4%BE+%E0%A4%B9%E0%A5%88+{f7}%2C{f8}%0A%E0%A4%B0%E0%A4%BE%E0%A4%B6%E0%A4%BF+%E0%A4%8F%E0%A4%95%E0%A4%A4%E0%A5%8D%E0%A4%B0+%E0%A4%95%E0%A5%80+%E0%A4%9C%E0%A4%BE%E0%A4%A8%E0%A5%80+%E0%A4%B9%E0%A5%88+{f9}%0A%E0%A4%B8%E0%A4%82%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A4%B9+%E0%A4%B8%E0%A5%8D%E0%A4%A5%E0%A4%BE%E0%A4%A8+{f10}"
     payload={}
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload)
     print(response.text)
-    url = f"https://sarthi.sonataindia.com/running_to_incomplete/{id}"
-    payload={}
-    headers = {}
-    response = requests.request("GET", url, headers=headers, data=payload)
+
+    engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
+    sql_query = f""" UPDATE dbo.WhatsAppQueue
+    SET status = 3
+    WHERE id = {id} """
+    conn = engine.connect()
+    conn.execute(sql_query)
+    # url = f"https://sarthi.sonataindia.com/running_to_incomplete/{id}"
+    # payload={}
+    # headers = {}
+    # response = requests.request("GET", url, headers=headers, data=payload)
+    logger.info("{response.text}  : Response CFU ")
 #thank you for accepting alert
 def cfu_3(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
+    logger.info('Collection Confirmation function called')
     url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to={user_number}&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%86%E0%A4%88%E0%A4%A1%E0%A5%80%3A+{f1}%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3%3A+{f4}%28{f5}%29%0A%E0%A4%B0%E0%A4%BE%E0%A4%B6%E0%A4%BF+%E0%A4%8F%E0%A4%95%E0%A4%A4%E0%A5%8D%E0%A4%B0+%E0%A4%95%E0%A5%80+%E0%A4%9C%E0%A4%BE%E0%A4%A8%E0%A5%80+%E0%A4%B9%E0%A5%88+{f9}%0A%E0%A4%B8%E0%A4%82%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A4%B9+%E0%A4%B8%E0%A5%8D%E0%A4%A5%E0%A4%BE%E0%A4%A8+{f10}%0A%E0%A4%95%E0%A5%8D%E0%A4%AF%E0%A4%BE+%E0%A4%86%E0%A4%AA%E0%A4%A8%E0%A5%87+%E0%A4%B0%E0%A4%BE%E0%A4%B6%E0%A4%BF+%E0%A4%8F%E0%A4%95%E0%A4%A4%E0%A5%8D%E0%A4%B0+%E0%A4%95%E0%A5%80+%E0%A4%B9%E0%A5%88%3F&isTemplate=true&header=%E0%A4%B8%E0%A4%82%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A4%B9+%E0%A4%95%E0%A5%80+%E0%A4%B8%E0%A5%8D%E0%A4%A5%E0%A4%BF%E0%A4%A4%E0%A4%BF"
     payload={}
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload)
     print(response.text)
+    engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
+    sql_query = f""" UPDATE dbo.WhatsAppQueue
+    SET stage = '1', status = 1
+    WHERE id = {id} """
+    conn = engine.connect()
+    conn.execute(sql_query)
     # response = requests.request("GET", url, headers=headers, data=payload)
-    url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
-    response = requests.request("POST", url)
+    # url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
+    # response = requests.request("POST", url)
+    logger.info("{response.text}  : Response CFU ")
 
 
 def ret_1(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
     """Retention Followup"""
+    logger.info('Retention FollowUp function called')
     url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to={user_number}&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3+%3A+{f1}+%28{f2}%29%0A%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%BF%E0%A4%A4+%E0%A4%8B%E0%A4%A3+%E0%A4%B0%E0%A4%BE%E0%A4%B6%E0%A4%BF+{f3}+%E0%A4%8B%E0%A4%A3+%E0%A4%95%E0%A4%BE+%E0%A4%89%E0%A4%A6%E0%A5%8D%E0%A4%A6%E0%A5%87%E0%A4%B6%E0%A5%8D%E0%A4%AF+{f4}%0A%E0%A4%A6%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A5%87%E0%A4%9C+%E0%A4%9C%E0%A4%AE%E0%A4%BE+%E0%A4%95%E0%A4%B0%E0%A4%B5%E0%A4%BE%E0%A4%8F+%E0%A4%B9%E0%A5%88%E0%A4%82+%3F+{f5}%0A%E0%A4%B8%E0%A4%B9-%E0%A4%86%E0%A4%B5%E0%A5%87%E0%A4%A6%E0%A4%95+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%AC%E0%A4%A6%E0%A4%B2%E0%A4%BE%E0%A4%B5+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F+{f6}+%0A%E0%A4%AC%E0%A5%88%E0%A4%82%E0%A4%95+%E0%A4%96%E0%A4%BE%E0%A4%A4%E0%A5%87+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%AC%E0%A4%A6%E0%A4%B2%E0%A4%BE%E0%A4%B5+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F+{f7}%0A%E0%A4%AA%E0%A4%A4%E0%A5%87+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%AC%E0%A4%A6%E0%A4%B2%E0%A4%BE%E0%A4%B5+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F+{f8}%0A%E0%A4%86%E0%A4%AA+%E0%A4%95%E0%A4%BF%E0%A4%B8+%E0%A4%A4%E0%A4%BE%E0%A4%B0%E0%A5%80%E0%A4%96+%E0%A4%95%E0%A5%8B+%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B8%E0%A5%87+%E0%A4%B8%E0%A4%82%E0%A4%AA%E0%A4%B0%E0%A5%8D%E0%A4%95+%E0%A4%95%E0%A4%B0%E0%A5%87%E0%A4%82%E0%A4%97%E0%A5%87++%3F%0A%28%E0%A4%89%E0%A4%A6%E0%A4%BE%E0%A4%B9%E0%A4%B0%E0%A4%A3+%E0%A4%95%E0%A5%87+%E0%A4%B2%E0%A4%BF%E0%A4%8F%2C+%E0%A4%AF%E0%A4%A6%E0%A4%BF+%E0%A4%86%E0%A4%AA+19+%E0%A4%AB%E0%A4%B0%E0%A4%B5%E0%A4%B0%E0%A5%80+2023+%E0%A4%95%E0%A5%8B+%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%B9%E0%A4%95+%E0%A4%B8%E0%A5%87+%E0%A4%B8%E0%A4%82%E0%A4%AA%E0%A4%B0%E0%A5%8D%E0%A4%95++%E0%A4%95%E0%A4%B0+%E0%A4%B8%E0%A4%95%E0%A4%A4%E0%A5%87+%E0%A4%B9%E0%A5%88%E0%A4%82%2C+%E0%A4%A4%E0%A5%8B+190223+%E0%A4%A6%E0%A4%B0%E0%A5%8D%E0%A4%9C+%E0%A4%95%E0%A4%B0%E0%A5%87%E0%A4%82&isTemplate=true&header=%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%87+%E0%A4%AA%E0%A4%BE%E0%A4%B8+%E0%A4%8F%E0%A4%95+%E0%A4%A8%E0%A4%AF%E0%A4%BE+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B9%E0%A5%88"
     payload={}
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload)
     print(response.text)
     # response = requests.request("GET", url, headers=headers, data=payload)
-    url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
-    response = requests.request("POST", url)
+    engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
+    sql_query = f""" UPDATE dbo.WhatsAppQueue
+    SET stage = '1', status = 1
+    WHERE id = {id} """
+    conn = engine.connect()
+    conn.execute(sql_query)
+    # url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
+    # response = requests.request("POST", url)
 
 
 def ret_2(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
     """Retention Reminder"""
+    logger.info('Retention Reminder function called')
     url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&send_to={user_number}&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&password=z24gzBUA&msg=%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%AF%E0%A4%BE%E0%A4%A6+%E0%A4%A6%E0%A4%BF%E0%A4%B2%E0%A4%BE%E0%A4%AF%E0%A4%BE+%E0%A4%9C%E0%A4%BE%E0%A4%A4%E0%A4%BE+%E0%A4%B9%E0%A5%88+%E0%A4%95%E0%A5%87+%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%87+%E0%A4%AA%E0%A4%BE%E0%A4%B8+%E0%A4%86%E0%A4%97%E0%A4%BE%E0%A4%AE%E0%A5%80+%E0%A4%B8%E0%A4%AE%E0%A4%AF+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%8F%E0%A4%95+%E0%A4%B0%E0%A4%BF%E0%A4%9F%E0%A5%87%E0%A4%82%E0%A4%B6%E0%A4%A8+%E0%A4%B8%E0%A4%82%E0%A4%AC%E0%A4%82%E0%A4%A7%E0%A5%80+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B9%E0%A5%88%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3+%3A+{f1}+%28{f2}%29%0A%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%BF%E0%A4%A4+%E0%A4%8B%E0%A4%A3+%E0%A4%B0%E0%A4%BE%E0%A4%B6%E0%A4%BF+{f3}%0A%E0%A4%8B%E0%A4%A3+%E0%A4%95%E0%A4%BE+%E0%A4%89%E0%A4%A6%E0%A5%8D%E0%A4%A6%E0%A5%87%E0%A4%B6%E0%A5%8D%E0%A4%AF+{f4}%0A%E0%A4%A6%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A5%87%E0%A4%9C+%E0%A4%9C%E0%A4%AE%E0%A4%BE+%E0%A4%95%E0%A4%B0%E0%A4%B5%E0%A4%BE%E0%A4%8F+%E0%A4%B9%E0%A5%88%E0%A4%82+%3F+{f5}%0A%E0%A4%B8%E0%A4%B9-%E0%A4%86%E0%A4%B5%E0%A5%87%E0%A4%A6%E0%A4%95+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%AC%E0%A4%A6%E0%A4%B2%E0%A4%BE%E0%A4%B5+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F+{f6}+%0A%E0%A4%AC%E0%A5%88%E0%A4%82%E0%A4%95+%E0%A4%96%E0%A4%BE%E0%A4%A4%E0%A5%87+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%AC%E0%A4%A6%E0%A4%B2%E0%A4%BE%E0%A4%B5+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F+{f7}%0A%E0%A4%AA%E0%A4%A4%E0%A5%87+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%AC%E0%A4%A6%E0%A4%B2%E0%A4%BE%E0%A4%B5+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F+{f8}"
     payload={}
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload)
     print(response.text)
+    engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
+    sql_query = f""" UPDATE dbo.WhatsAppQueue
+    SET status = 3
+    WHERE id = {id} """
+    conn = engine.connect()
+    conn.execute(sql_query)
     # response = requests.request("GET", url, headers=headers, data=payload)
-    url = f'https://sarthi.sonataindia.com/running_to_incomplete/{id}'  ## isko comment mat karna , webhook hai 
-    response = requests.request("POST", url)
+    # url = f'https://sarthi.sonataindia.com/running_to_incomplete/{id}'  ## isko comment mat karna , webhook hai 
+    # response = requests.request("POST", url)
 
 
 def ret_3(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
     """Retention Confirmation"""
+    logger.info('Retention Confirmation function called')
     url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to={user_number}&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3%3A+{f1}+%28{f2}%29%0A%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%BF%E0%A4%A4+%E0%A4%8B%E0%A4%A3+%E0%A4%B0%E0%A4%BE%E0%A4%B6%E0%A4%BF+{f3}%0A%E0%A4%8B%E0%A4%A3+%E0%A4%95%E0%A4%BE+%E0%A4%89%E0%A4%A6%E0%A5%8D%E0%A4%A6%E0%A5%87%E0%A4%B6%E0%A5%8D%E0%A4%AF+{f4}%0A%E0%A4%A6%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A5%87%E0%A4%9C+%E0%A4%9C%E0%A4%AE%E0%A4%BE+%E0%A4%95%E0%A4%B0%E0%A4%B5%E0%A4%BE%E0%A4%8F+%E0%A4%B9%E0%A5%88%E0%A4%82+%3F+{f5}%0A%E0%A4%AC%E0%A5%88%E0%A4%82%E0%A4%95+%E0%A4%96%E0%A4%BE%E0%A4%A4%E0%A5%87+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%AC%E0%A4%A6%E0%A4%B2%E0%A4%BE%E0%A4%B5+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F+{f6}%0A%E0%A4%B8%E0%A4%B9-%E0%A4%86%E0%A4%B5%E0%A5%87%E0%A4%A6%E0%A4%95+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%AC%E0%A4%A6%E0%A4%B2%E0%A4%BE%E0%A4%B5+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F+{f7}+%0A%E0%A4%AA%E0%A4%A4%E0%A5%87+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%AC%E0%A4%A6%E0%A4%B2%E0%A4%BE%E0%A4%B5+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F+{f8}%0A%0A%E0%A4%95%E0%A5%8D%E0%A4%AF%E0%A4%BE+%E0%A4%86%E0%A4%AA%E0%A4%A8%E0%A5%87+%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%B9%E0%A4%95+%E0%A4%B8%E0%A5%87+%E0%A4%B8%E0%A4%82%E0%A4%AA%E0%A4%B0%E0%A5%8D%E0%A4%95+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F&isTemplate=true&header=%E0%A4%B0%E0%A4%BF%E0%A4%9F%E0%A5%87%E0%A4%82%E0%A4%B6%E0%A4%A8+%E0%A4%95%E0%A5%80+%E0%A4%B8%E0%A5%8D%E0%A4%A5%E0%A4%BF%E0%A4%A4%E0%A4%BF"
     # url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to={user_number}&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3%3A+{f1}+%28{f2}%29%0A%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A4%BF%E0%A4%A4+%E0%A4%8B%E0%A4%A3+%E0%A4%B0%E0%A4%BE%E0%A4%B6%E0%A4%BF+{f3}%0A%E0%A4%8B%E0%A4%A3+%E0%A4%95%E0%A4%BE+%E0%A4%89%E0%A4%A6%E0%A5%8D%E0%A4%A6%E0%A5%87%E0%A4%B6%E0%A5%8D%E0%A4%AF+{f4}%0A%E0%A4%A6%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%BE%E0%A4%B5%E0%A5%87%E0%A4%9C+%E0%A4%9C%E0%A4%AE%E0%A4%BE+%E0%A4%95%E0%A4%B0%E0%A4%B5%E0%A4%BE%E0%A4%8F+%E0%A4%B9%E0%A5%88%E0%A4%82+%3F+{f5}%0A%E0%A4%B8%E0%A4%B9-%E0%A4%86%E0%A4%B5%E0%A5%87%E0%A4%A6%E0%A4%95+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%AC%E0%A4%A6%E0%A4%B2%E0%A4%BE%E0%A4%B5+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F+{f6}+%0A%E0%A4%AC%E0%A5%88%E0%A4%82%E0%A4%95+%E0%A4%96%E0%A4%BE%E0%A4%A4%E0%A5%87+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%AC%E0%A4%A6%E0%A4%B2%E0%A4%BE%E0%A4%B5+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F+{f7}%0A%E0%A4%AA%E0%A4%A4%E0%A5%87+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%AC%E0%A4%A6%E0%A4%B2%E0%A4%BE%E0%A4%B5+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F+{f8}%0A%E0%A4%95%E0%A5%8D%E0%A4%AF%E0%A4%BE+%E0%A4%86%E0%A4%AA%E0%A4%A8%E0%A5%87+%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%B9%E0%A4%95+%E0%A4%B8%E0%A5%87+%E0%A4%B8%E0%A4%82%E0%A4%AA%E0%A4%B0%E0%A5%8D%E0%A4%95+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F&isTemplate=true&header=%E0%A4%B0%E0%A4%BF%E0%A4%9F%E0%A5%87%E0%A4%82%E0%A4%B6%E0%A4%A8+%E0%A4%95%E0%A5%80+%E0%A4%B8%E0%A5%8D%E0%A4%A5%E0%A4%BF%E0%A4%A4%E0%A4%BF"
     payload={}
@@ -92,63 +138,103 @@ def ret_3(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
     response = requests.request("GET", url, headers=headers, data=payload)
 
     print(response.text)
+    engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
+    sql_query = f""" UPDATE dbo.WhatsAppQueue
+    SET stage = '1', status = 1
+    WHERE id = {id} """
+    conn = engine.connect()
+    conn.execute(sql_query)
     # response = requests.request("GET", url, headers=headers, data=payload)
-    url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
-    response = requests.request("POST", url)
+    # url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
+    # response = requests.request("POST", url)
 
 
 def WNAP_alert(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
     """ Alert Q created If alternate number is present """
+    logger.info('WNAP_alert function called')
     url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&send_to={user_number}&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&password=z24gzBUA&msg=%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%BF%E0%A4%AF+{f1}%0A%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%95%E0%A4%BE+%E0%A4%97%E0%A4%B2%E0%A4%A4+%E0%A5%9E%E0%A5%8B%E0%A4%A8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+%E0%A4%B8%E0%A5%81%E0%A4%A7%E0%A4%BE%E0%A4%B0%E0%A4%A8%E0%A4%BE+%E0%A4%B9%E0%A5%88%E0%A5%A4++%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3+%3A+{f2}+%28{f3}%29%0A%E0%A4%B5%E0%A5%88%E0%A4%95%E0%A4%B2%E0%A5%8D%E0%A4%AA%E0%A4%BF%E0%A4%95+%E0%A5%9E%E0%A5%8B%E0%A4%A8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+%3A+{f4}%0A%E0%A4%95%E0%A5%83%E0%A4%AA%E0%A4%AF%E0%A4%BE+%E0%A4%87%E0%A4%B8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+%E0%A4%AA%E0%A4%B0+%E0%A4%95%E0%A5%89%E0%A4%B2+%E0%A4%95%E0%A4%B0%E0%A5%87%E0%A4%82%E0%A5%A4"
     payload={}
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload)
     print(response.text)
-    url = f'https://sarthi.sonataindia.com/running_to_incomplete/{id}'  ## isko comment mat karna , webhook hai 
-    response = requests.request("POST", url)
+    engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
+    sql_query = f""" UPDATE dbo.WhatsAppQueue
+    SET status = 3
+    WHERE id = {id} """
+    conn = engine.connect()
+    conn.execute(sql_query)
+    # url = f'https://sarthi.sonataindia.com/running_to_incomplete/{id}'  ## isko comment mat karna , webhook hai 
+    # response = requests.request("POST", url)
 
 def WNAP_flow(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
     """ If alternate number is present """
+    logger.info('WNAP_flow function called')
     print('thi sis running')
     url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&send_to={user_number}&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&isTemplate=true&password=z24gzBUA&msg=%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%BF%E0%A4%AF+{f1}%0A%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%95%E0%A4%BE+%E0%A4%97%E0%A4%B2%E0%A4%A4+%E0%A5%9E%E0%A5%8B%E0%A4%A8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+%E0%A4%B8%E0%A5%81%E0%A4%A7%E0%A4%BE%E0%A4%B0%E0%A4%A8%E0%A4%BE+%E0%A4%A5%E0%A4%BE%E0%A5%A4+%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3%3A+{f2}+%28{f3}%29%0A%E0%A4%B5%E0%A5%88%E0%A4%95%E0%A4%B2%E0%A5%8D%E0%A4%AA%E0%A4%BF%E0%A4%95+%E0%A4%AB%E0%A4%BC%E0%A5%8B%E0%A4%A8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+%3A+{f4}%0A%E0%A4%95%E0%A5%8D%E0%A4%AF%E0%A4%BE+%E0%A4%86%E0%A4%AA%E0%A4%A8%E0%A5%87+%E0%A4%87%E0%A4%B8+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF++%E0%A4%95%E0%A5%8B+%E0%A4%AA%E0%A5%82%E0%A4%B0%E0%A4%BE+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%3F"
     payload={}
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload)
     print(response.text)
-    url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
-    response = requests.request("POST", url)
+    engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
+    sql_query = f""" UPDATE dbo.WhatsAppQueue
+    SET stage = '1', status = 1
+    WHERE id = {id} """
+    conn = engine.connect()
+    conn.execute(sql_query)
+    # url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
+    # response = requests.request("POST", url)
     print(response.text)
 
 def WNV_alert(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
     """ Flow to begin when Agent Visits the Customer  """
+    logger.info('WNV_alert function called')
     url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to={user_number}&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%AF%E0%A4%BE%E0%A4%A6+%E0%A4%A6%E0%A4%BF%E0%A4%B2%E0%A4%BE%E0%A4%AF%E0%A4%BE+%E0%A4%9C%E0%A4%BE%E0%A4%A4%E0%A4%BE+%E0%A4%B9%E0%A5%88+%E0%A4%95%E0%A4%BF+%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%97%E0%A4%B2%E0%A4%A4+%E0%A5%9E%E0%A5%8B%E0%A4%A8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+%E0%A4%B8%E0%A5%81%E0%A4%A7%E0%A4%BE%E0%A4%B0+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B9%E0%A5%87%E0%A4%A4%E0%A5%81+%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B8%E0%A5%87+%E0%A4%B5%E0%A5%8D%E0%A4%AF%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BF%E0%A4%97%E0%A4%A4+%E0%A4%B0%E0%A5%82%E0%A4%AA+%E0%A4%B8%E0%A5%87+%E0%A4%AE%E0%A4%BF%E0%A4%B2%E0%A4%A8%E0%A4%BE+%E0%A4%B9%E0%A5%88%E0%A5%A4+%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3+%3A+{f2}+%28{f3}%29%0A%E0%A4%AE%E0%A4%BF%E0%A4%B2%E0%A4%A8%E0%A5%87+%E0%A4%95%E0%A5%80+%E0%A4%A4%E0%A4%BE%E0%A4%B0%E0%A5%80%E0%A4%96+%3A+{f5}%0A%E0%A4%AE%E0%A4%BF%E0%A4%B2%E0%A4%A8%E0%A5%87+%E0%A4%95%E0%A4%BE+%E0%A4%B8%E0%A4%AE%E0%A4%AF+%3A+{f6}"
     payload={}
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload)
     print(response.text)
-    url = f'https://sarthi.sonataindia.com/running_to_incomplete/{id}'  ## isko comment mat karna , webhook hai 
-    response = requests.request("POST", url)
+    engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
+    sql_query = f""" UPDATE dbo.WhatsAppQueue
+    SET status = 3
+    WHERE id = {id} """
+    conn = engine.connect()
+    conn.execute(sql_query)
+    # url = f'https://sarthi.sonataindia.com/running_to_incomplete/{id}'  ## isko comment mat karna , webhook hai 
+    # response = requests.request("POST", url)
 
 def WNV_flow(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
     """ Flow to begin when Agent Visits the Customer  """
+    logger.info('WNV_flow function called')
     url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to={user_number}&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%BF%E0%A4%AF+{f1}%0A%E0%A4%95%E0%A5%8D%E0%A4%AF%E0%A4%BE+%E0%A4%86%E0%A4%AA%E0%A4%A8%E0%A5%87+%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B8%E0%A5%87+%E0%A4%B5%E0%A5%8D%E0%A4%AF%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BF%E0%A4%97%E0%A4%A4+%E0%A4%B0%E0%A5%82%E0%A4%AA+%E0%A4%B8%E0%A5%87+%E0%A4%AE%E0%A4%BF%E0%A4%B2%E0%A4%95%E0%A4%B0+%E0%A4%97%E0%A4%B2%E0%A4%A4+%E0%A5%9E%E0%A5%8B%E0%A4%A8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%B8%E0%A5%81%E0%A4%A7%E0%A4%BE%E0%A4%B0+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%3F%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3+%3A+{f2}+%28{f3}%29&isTemplate=true"
     payload={}
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload)
     print(response.text)
-    url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
-    response = requests.request("POST", url)
+    engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
+    sql_query = f""" UPDATE dbo.WhatsAppQueue
+    SET stage = '1', status = 1
+    WHERE id = {id} """
+    conn = engine.connect()
+    conn.execute(sql_query)
+    # url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
+    # response = requests.request("POST", url)
 
 def WNANP_flow(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
     """ If alternate number is NOT present """
-    print('WNANp flowwww')
+    logger.info('WNANP_alert function called')
     url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to={user_number}&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%BF%E0%A4%AF+{f1}%0A%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%87+%E0%A4%AA%E0%A4%BE%E0%A4%B8+%E0%A4%8F%E0%A4%95+%E0%A4%97%E0%A4%B2%E0%A4%A4+%E0%A5%9E%E0%A5%8B%E0%A4%A8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+%E0%A4%B8%E0%A5%81%E0%A4%A7%E0%A4%BE%E0%A4%B0+%E0%A4%B8%E0%A4%82%E0%A4%AC%E0%A4%82%E0%A4%A7%E0%A5%80+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B9%E0%A5%88%E0%A5%A4+%0A%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B8%E0%A5%87+%E0%A4%B5%E0%A5%8D%E0%A4%AF%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BF%E0%A4%97%E0%A4%A4+%E0%A4%B0%E0%A5%82%E0%A4%AA+%E0%A4%B8%E0%A5%87+%E0%A4%AE%E0%A4%BF%E0%A4%B2%E0%A4%95%E0%A4%B0+%E0%A4%97%E0%A4%B2%E0%A4%A4+%E0%A5%9E%E0%A5%8B%E0%A4%A8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%B8%E0%A5%81%E0%A4%A7%E0%A4%BE%E0%A4%B0+%E0%A4%95%E0%A4%B0%E0%A4%A8%E0%A4%BE+%E0%A4%B9%E0%A5%88%E0%A5%A4+%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3+%3A+{f2}+%28{f3}%29%0A%E0%A4%86%E0%A4%AA+%E0%A4%95%E0%A5%80+%E0%A4%A4%E0%A4%BE%E0%A4%B0%E0%A5%80%E0%A4%96+%E0%A4%95%E0%A5%8B+%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B8%E0%A5%87+%E0%A4%AE%E0%A4%BF%E0%A4%B2+%E0%A4%B8%E0%A4%95%E0%A4%A4%E0%A5%87+%E0%A4%B9%E0%A5%88+%3F%0A%28%E0%A4%89%E0%A4%A6%E0%A4%BE%E0%A4%B9%E0%A4%B0%E0%A4%A3+%E0%A4%95%E0%A5%87+%E0%A4%B2%E0%A4%BF%E0%A4%8F%2C+%E0%A4%AF%E0%A4%A6%E0%A4%BF+%E0%A4%86%E0%A4%AA+18+%E0%A4%AB%E0%A4%B0%E0%A4%B5%E0%A4%B0%E0%A5%80+2023+%E0%A4%95%E0%A5%8B+%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%B9%E0%A4%95+%E0%A4%B8%E0%A5%87+%E0%A4%B8%E0%A4%82%E0%A4%AA%E0%A4%B0%E0%A5%8D%E0%A4%95++%E0%A4%95%E0%A4%B0+%E0%A4%B8%E0%A4%95%E0%A4%A4%E0%A5%87+%E0%A4%B9%E0%A5%88%E0%A4%82%2C+%E0%A4%A4%E0%A5%8B+180223+%E0%A4%A6%E0%A4%B0%E0%A5%8D%E0%A4%9C+%E0%A4%95%E0%A4%B0%E0%A5%87%E0%A4%82"
     payload={}
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload)
     print(response.text)
-    url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
-    response = requests.request("POST", url)
+    engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
+    sql_query = f""" UPDATE dbo.WhatsAppQueue
+    SET stage = '1', status = 1
+    WHERE id = {id} """
+    conn = engine.connect()
+    conn.execute(sql_query)
+    # url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
+    # response = requests.request("POST", url)
     print(response.text)
 
 
