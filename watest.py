@@ -277,11 +277,11 @@ for flow in queue_df.to_dict('r'):
     if flow['status'] == '1':
         print('%%%%%%%%',flow['status'])
         # if flow['update_time'] > (datetime.now() + timedelta(minutes=5)):
-        if datetime.now() > (flow['update_time'] + timedelta(minutes=30)):
+        if datetime.now() > (flow['update_time'] + timedelta(minutes=5)):
             print('Status changing ......')
             engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
             sql_query = f""" UPDATE dbo.WhatsAppQueue
-            SET status = 0
+            SET status = 3
             WHERE id = {flow['id']} """
             conn = engine.connect()
             conn.execute(sql_query)

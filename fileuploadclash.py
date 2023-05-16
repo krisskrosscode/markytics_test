@@ -19,7 +19,7 @@ server = "172.17.130.216"
 engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
 
 sql_query = f""" SELECT * FROM Sonata_Connect.dbo.WhatsAppQueue 
-WHERE flow_name <> 'file_upload' AND (status = 0 or status = 1 or status IS NULL) and contact_number = 8335076174"""
+WHERE flow_name <> file_upload AND (status = 0 or status = 1 or status IS NULL) and contact_number = 9162841833"""
 queue_df=pd.read_sql_query(sql_query,engine)
 
 logger.info('Connected to Database')
@@ -238,50 +238,17 @@ def WNANP_flow(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
     print(response.text)
 
 
-# def WN_P_Reminder(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
-#     """Reminder Template when alternate number is NOT present"""
-#     url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to={user_number}&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%AF%E0%A4%BE%E0%A4%A6+%E0%A4%A6%E0%A4%BF%E0%A4%B2%E0%A4%BE%E0%A4%AF%E0%A4%BE+%E0%A4%9C%E0%A4%BE%E0%A4%A4%E0%A4%BE+%E0%A4%B9%E0%A5%88+%E0%A4%95%E0%A5%87+%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%87+%E0%A4%AA%E0%A4%BE%E0%A4%B8+%E0%A4%86%E0%A4%97%E0%A4%BE%E0%A4%AE%E0%A5%80+%E0%A4%B8%E0%A4%AE%E0%A4%AF+%E0%A4%AE%E0%A5%87%E0%A4%82+%E0%A4%8F%E0%A4%95+%E0%A4%97%E0%A4%B2%E0%A4%A4+%E0%A5%9E%E0%A5%8B%E0%A4%A8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+%E0%A4%B8%E0%A5%81%E0%A4%A7%E0%A4%BE%E0%A4%B0+%E0%A4%95%E0%A4%BE+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B9%E0%A5%88%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%86%E0%A4%88%E0%A4%A1%E0%A5%80%3A+{f1}%0A%E0%A4%86%E0%A4%AA%E0%A4%95%E0%A5%8B+%E0%A4%B6%E0%A5%8D%E0%A4%B0%E0%A5%80%E0%A4%AE%E0%A4%BE%E0%A4%A8+{f2}%28{f3}%29+%E0%A4%B8%E0%A5%87+%E0%A4%8F%E0%A4%95+%E0%A4%A8%E0%A4%AF%E0%A4%BE+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%B8%E0%A5%8C%E0%A4%82%E0%A4%AA%E0%A4%BE+%E0%A4%97%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88%E0%A5%A4%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3%3A+{f4}%28{f5}%29%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%AA%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%A5%E0%A4%AE%E0%A4%BF%E0%A4%95%E0%A4%A4%E0%A4%BE+{f6}+%E0%A4%B9%E0%A5%88%E0%A5%A4%0A%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%95%E0%A5%80+%E0%A4%B8%E0%A4%AE%E0%A4%AF+%E0%A4%B8%E0%A5%80%E0%A4%AE%E0%A4%BE+%E0%A4%B9%E0%A5%88+{f7}%2C{f8}%0A%E0%A4%B5%E0%A5%88%E0%A4%95%E0%A4%B2%E0%A5%8D%E0%A4%AA%E0%A4%BF%E0%A4%95+%E0%A4%AB%E0%A4%BC%E0%A5%8B%E0%A4%A8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+{f10}&isTemplate=true"
-#     payload={}
-#     headers = {}
-#     response = requests.request("GET", url, headers=headers, data=payload)
-#     print(response.text)
-#     url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
-#     response = requests.request("POST", url)
-
-
-# def WN_P_Confirmation(id,user_number,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12):
-#     """Confirmation Template when alternate number is NOT present"""
-#     url = f"https://media.smsgupshup.com/GatewayAPI/rest?userid=2000209909&password=z24gzBUA&send_to={user_number}&v=1.1&format=json&msg_type=TEXT&method=SENDMESSAGE&msg=%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF+%E0%A4%86%E0%A4%88%E0%A4%A1%E0%A5%80%3A+{f1}%0A%E0%A4%89%E0%A4%AA%E0%A4%AD%E0%A5%8B%E0%A4%95%E0%A5%8D%E0%A4%A4%E0%A4%BE+%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3%3A+{f3}%28{f4}%29%0A%E0%A4%B5%E0%A5%88%E0%A4%95%E0%A4%B2%E0%A5%8D%E0%A4%AA%E0%A4%BF%E0%A4%95+%E0%A5%9E%E0%A5%8B%E0%A4%A8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+%3A+{f10}%0A%E0%A4%95%E0%A5%8D%E0%A4%AF%E0%A4%BE+%E0%A4%86%E0%A4%AA%E0%A4%A8%E0%A5%87+%E0%A4%97%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%B9%E0%A4%95+%E0%A4%B8%E0%A5%87+%E0%A4%B8%E0%A4%82%E0%A4%AA%E0%A4%B0%E0%A5%8D%E0%A4%95+%E0%A4%95%E0%A4%BF%E0%A4%AF%E0%A4%BE+%E0%A4%B9%E0%A5%88+%3F&isTemplate=true&header=%E0%A4%97%E0%A4%B2%E0%A4%A4+%E0%A5%9E%E0%A5%8B%E0%A4%A8+%E0%A4%A8%E0%A4%82%E0%A4%AC%E0%A4%B0+%E0%A4%B8%E0%A5%81%E0%A4%A7%E0%A4%BE%E0%A4%B0+%E0%A4%95%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%AF"
-#     payload={}
-#     headers = {}
-#     response = requests.request("GET", url, headers=headers, data=payload)
-#     print(response.text)
-#     url = f'https://sarthi.sonataindia.com/we_callback/{id}'  ## isko comment mat karna , webhook hai 
-#     response = requests.request("POST", url)
-
-    #thank you for putting date alert
-#collection status alert
-#payment full or partial alert
-#full payment thanks alert
-#partial payment how much alert
-
-#after getting a DF with unique UserID and flows either running or to be started, we act on them
-#if its running, 
-    #if time elapsed (current time - update time) > 5 min, 
-        #then mark as incomplete
-#if status is none,
-    #start flow, mark it as running
 print("Queueueueueu" , queue_df.info())
 for flow in queue_df.to_dict('r'):
     print("ffffff",flow['flow_name'], flow['status'], (datetime.now() > flow['update_time'] + timedelta(minutes=5)))
     if flow['status'] == '1':
         print('%%%%%%%%',flow['status'])
         # if flow['update_time'] > (datetime.now() + timedelta(minutes=5)):
-        if datetime.now() > (flow['update_time'] + timedelta(minutes=30)):
+        if datetime.now() > (flow['update_time'] + timedelta(minutes=5)):
             print('Status changing ......')
             engine = create_engine(f"mssql+pyodbc://{user1}:{password}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
             sql_query = f""" UPDATE dbo.WhatsAppQueue
-            SET status = 0
+            SET status = 3
             WHERE id = {flow['id']} """
             conn = engine.connect()
             conn.execute(sql_query)
